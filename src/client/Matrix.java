@@ -1,69 +1,48 @@
-import javafx.application.Application; 
-import javafx.geometry.Insets; 
-import javafx.geometry.Pos; 
-import javafx.scene.Scene; 
-import javafx.scene.control.Button; 
-import javafx.scene.layout.GridPane; 
-import javafx.scene.layout.StackPane; 
-import javafx.scene.layout.HBox; 
 import javafx.scene.layout.VBox; 
-import javafx.scene.text.Font; 
-import javafx.scene.text.Text; 
-import javafx.scene.text.FontWeight; 
-import javafx.scene.paint.Color; 
-import javafx.scene.control.TextField; 
-import javafx.scene.control.TextFormatter; 
-import javafx.scene.control.TextFormatter.*; 
-import javafx.stage.Stage; 
-import javafx.scene.shape.Rectangle; 
-import java.util.function.*;
-import java.util.function.*;
+import java.util.ArrayList;
 
-public class Matrix extends Application { 
-   @Override 
-   public void start(Stage stage) {      
+public class Matrix extends VBox { 
+    private String correctColor, notQuietColor, wrongColor;
+    private String solution;
+    private ArrayList<Word> words = new ArrayList<Word>();
+    private int currentLetter, currentWord;
 
-       Rectangle rectangle = new Rectangle();
-           
-       //Setting the properties of the rectangle 
-       rectangle.setWidth(50.0f); 
-       rectangle.setHeight(50.0f); 
-       rectangle.setArcWidth(20.0); 
-       rectangle.setArcHeight(20.0);  
-       rectangle.setFill(Color.web("#538d4e"));
+    public Matrix(String solution, int tries) {
+        this.solution = solution;
 
-       Text text = new Text("S");
+        for (int i = 0; i < tries; i++) {
+            this.words.add(new Word(5));
+        }
 
-       text.setFont(Font.font("Verdana", FontWeight.LIGHT, 50));
-       text.setFill(Color.web("#acd6e5"));
-       StackPane stack = new StackPane();
-       stack.getChildren().addAll(rectangle, text);
+        this.getChildren().addAll(words);
+    }
 
-       //Row for word
-       HBox hbox = new HBox();
-       hbox.setPadding(new Insets(5, 5, 5, 5));
-       hbox.setSpacing(5);
-       hbox.getChildren().addAll(stack);
-      
-       // Holds rows
-       VBox vbox = new VBox();
-       vbox.setPadding(new Insets(5, 5, 5, 5));
-       vbox.setSpacing(5);
-       vbox.getChildren().addAll(hbox);
+    public void checkWord() {
+        Letter current; 
+        // todo: credit calculation
+        // todo: what happens if user guessed the correct word
+        // todo: should we lookup word in an actual dictionary or not
+        for (int i = 0; i < solution.length(); i++) {
+            current = this.words.get(this.currentWord).getLetter(i);
 
-       //Creating a scene object 
-       Scene scene = new Scene(vbox);  
-      
-       //Setting title to the Stage 
-       stage.setTitle("Grid Pane Example"); 
-         
-       //Adding scene to the stage 
-       stage.setScene(scene); 
-         
-       //Displaying the contents of the stage 
-       stage.show(); 
-   } 
-   public static void main(String args[]){ 
-      launch(args); 
-   } 
+            if (current.getText().equals(solution.charAt(i)))
+                current.changeColor(correctColor);
+
+            else if (solution.contains(current.getText()))
+                current.changeColor(notQuietColor);
+
+            else
+                current.changeColor(wrongColor);
+        }
+
+        this.currentWord++;
+    }
+
+    public void writeLetter(String c) {
+        this.words.get(this.currentWord).getLetter(++this.currentLetter).setText(c);
+    }
+
+    public void removeCurrentLetter() {
+        this.words.get(this.currentWord).getLetter(this.currentLetter--).setText("");
+    }
 } 
