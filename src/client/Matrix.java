@@ -2,13 +2,15 @@ import javafx.scene.layout.VBox;
 import java.util.ArrayList;
 
 public class Matrix extends VBox { 
-    private String correctColor, notQuietColor, wrongColor;
-    private String solution;
+    private String correctColor = "#6aaa64", notQuietColor = "#c9b458",
+        wrongColor = "#787c7e", checkedLetterColor = "#ffffff", solution;
     private ArrayList<Word> words = new ArrayList<Word>();
-    private int currentLetter, currentWord;
+    private int tries, currentLetter = -1, currentWord = 0;
+    private boolean solved = false;
 
     public Matrix(String solution, int tries) {
-        this.solution = solution;
+        this.solution = solution.toUpperCase();
+        this.tries = tries;
 
         for (int i = 0; i < tries; i++) {
             this.words.add(new Word(5));
@@ -18,15 +20,22 @@ public class Matrix extends VBox {
     }
 
     public void checkWord() {
+
+        if (this.solved || this.currentLetter < this.solution.length() - 1 || this.currentWord == this.tries)
+            return;
+
         Letter current; 
+        int score = 0;
         // todo: credit calculation
-        // todo: what happens if user guessed the correct word
         // todo: should we lookup word in an actual dictionary or not
         for (int i = 0; i < solution.length(); i++) {
             current = this.words.get(this.currentWord).getLetter(i);
+            current.changeTextColor(checkedLetterColor);
 
-            if (current.getText().equals(solution.charAt(i)))
+            if (current.getText().equals(solution.substring(i, i+1))) {
                 current.changeColor(correctColor);
+                score++;
+            }
 
             else if (solution.contains(current.getText()))
                 current.changeColor(notQuietColor);
@@ -35,14 +44,23 @@ public class Matrix extends VBox {
                 current.changeColor(wrongColor);
         }
 
+        if (score == solution.length())
+            this.solved = true;
+
         this.currentWord++;
+        this.tries--;
+        this.currentLetter = -1;
     }
 
     public void writeLetter(String c) {
+        if(this.solved || this.currentLetter >= this.solution.length() - 1)
+            return;
         this.words.get(this.currentWord).getLetter(++this.currentLetter).setText(c);
     }
 
     public void removeCurrentLetter() {
+        if (this.solved || this.currentLetter < 0)
+            return;
         this.words.get(this.currentWord).getLetter(this.currentLetter--).setText("");
     }
 } 

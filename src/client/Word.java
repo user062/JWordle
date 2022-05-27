@@ -6,7 +6,6 @@ class Word extends HBox {
     private ArrayList<Letter> word = new ArrayList<Letter>();
 
     public Word(Letter[] letters) {
-       this.setPadding(new Insets(5, 5, 5, 5));
 
        for (Letter l: letters)
            this.getChildren().addAll(l);
