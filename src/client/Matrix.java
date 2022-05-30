@@ -1,4 +1,6 @@
-import javafx.scene.layout.VBox; 
+//package src.client;
+
+import javafx.scene.layout.VBox;
 import java.util.ArrayList;
 
 public class Matrix extends VBox { 
@@ -21,11 +23,11 @@ public class Matrix extends VBox {
 
     public void checkWord() {
 
-        if (this.solved || this.currentLetter < this.solution.length() - 1 || this.currentWord == this.tries)
+        if (this.tries == 0 || this.currentLetter < this.solution.length() - 1)
             return;
 
         Letter current; 
-        int score = 0;
+        int correctLetters = 0;
         // todo: credit calculation
         // todo: should we lookup word in an actual dictionary or not
         for (int i = 0; i < solution.length(); i++) {
@@ -34,7 +36,7 @@ public class Matrix extends VBox {
 
             if (current.getText().equals(solution.substring(i, i+1))) {
                 current.changeColor(correctColor);
-                score++;
+                correctLetters++;
             }
 
             else if (solution.contains(current.getText()))
@@ -44,7 +46,7 @@ public class Matrix extends VBox {
                 current.changeColor(wrongColor);
         }
 
-        if (score == solution.length())
+        if (correctLetters == solution.length())
             this.solved = true;
 
         this.currentWord++;
@@ -62,5 +64,19 @@ public class Matrix extends VBox {
         if (this.solved || this.currentLetter < 0)
             return;
         this.words.get(this.currentWord).getLetter(this.currentLetter--).setText("");
+    }
+
+    public int gameOver() {
+        if (this.solved)
+            return 1;
+        if (this.tries != 0)
+            return -1;
+        else
+            return 0;
+    }
+
+    public void clearMatrix() {
+        for (Word w : words)
+            w.clearWord();
     }
 } 

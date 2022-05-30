@@ -1,4 +1,6 @@
-import javafx.scene.layout.StackPane; 
+//package src.client;
+
+import javafx.scene.layout.StackPane;
 import javafx.scene.text.Font; 
 import javafx.scene.text.Text; 
 import javafx.scene.text.FontWeight; 
@@ -39,6 +41,11 @@ class Letter extends StackPane{
 
     public void changeTextColor(String color) {
         this.text.setFill(Color.web(color));
+    }
+
+    public void clearLetter() {
+        this.text.setText("");
+        this.rectangle.setFill(Color.web("#d3d6da"));
     }
 
 }

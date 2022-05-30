@@ -1,4 +1,6 @@
-import javafx.geometry.Insets; 
+//package src.client;
+
+import javafx.geometry.Insets;
 import javafx.scene.layout.HBox; 
 import java.util.ArrayList;
 
@@ -24,6 +26,11 @@ class Word extends HBox {
 
     public Letter getLetter(int i) {
         return this.word.get(i);
+    }
+
+    public void clearWord() {
+        for (Letter l: word)
+            l.clearLetter();
     }
 
 }
