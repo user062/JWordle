@@ -23,7 +23,7 @@ public class Matrix extends VBox {
 
     public void checkWord() {
 
-        if (this.tries == 0 || this.currentLetter < this.solution.length() - 1)
+        if (this.currentLetter < this.solution.length() - 1)
             return;
 
         Letter current; 
@@ -46,22 +46,23 @@ public class Matrix extends VBox {
                 current.changeColor(wrongColor);
         }
 
+        this.currentWord++;
+        this.tries--;
+
         if (correctLetters == solution.length())
             this.solved = true;
 
-        this.currentWord++;
-        this.tries--;
         this.currentLetter = -1;
     }
 
     public void writeLetter(String c) {
-        if(this.solved || this.currentLetter >= this.solution.length() - 1)
+        if(this.currentLetter >= this.solution.length() - 1)
             return;
         this.words.get(this.currentWord).getLetter(++this.currentLetter).setText(c);
     }
 
     public void removeCurrentLetter() {
-        if (this.solved || this.currentLetter < 0)
+        if (this.currentLetter < 0)
             return;
         this.words.get(this.currentWord).getLetter(this.currentLetter--).setText("");
     }

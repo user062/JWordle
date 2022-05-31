@@ -9,12 +9,8 @@ import javafx.scene.input.KeyEvent;
 import javafx.scene.input.KeyCode;
 import javafx.scene.control.Alert;
 import javafx.scene.control.Alert.*;
-import javafx.scene.control.ButtonType;
-import java.lang.Thread;
-import javafx.concurrent.Task;
-import java.util.Optional;
-import javafx.animation.AnimationTimer;
-
+import javafx.util.Duration;
+import javafx.animation.PauseTransition;  
 
 public class Main extends Application { 
     private static Matrix matrix = new Matrix("hello", 5);
@@ -24,35 +20,35 @@ public class Main extends Application {
     public void start(Stage stage) {      
         
         Alert winPopup = new Alert(AlertType.INFORMATION);
-        //winPopup.initModality(javafx.stage.Modality.NONE);
         winPopup.setTitle("game finished!");
         winPopup.setContentText("Congragulations! You guessed the correct word, the word is Hello !");
         Alert losePopup = new Alert(AlertType.INFORMATION);
         losePopup.setTitle("game finished!");
         losePopup.setContentText("good luck next time! The correct is Hello !");
 
-        AnimationTimer timer = new AnimationTimer();
-
-        Scene scene = new Scene(matrix);  
+        PauseTransition pause = new PauseTransition(Duration.millis(700));  
+        Scene scene = new Scene(matrix); 
 
         scene.setOnKeyReleased((KeyEvent event) -> {
-                    if (event.getCode().isLetterKey())
+                    if (event.getCode().isLetterKey() && gameOver == false)
                         matrix.writeLetter(event.getCode().getName());
 
-                    else if(event.getCode() == KeyCode.ENTER) {
+                    else if(event.getCode() == KeyCode.ENTER && gameOver == false) {
                         matrix.checkWord();
                         if (matrix.gameOver() == 1 && gameOver == false) {
-                            winPopup.showAndWait();
+                            pause.setOnFinished(e -> {winPopup.show();});
+                            pause.play(); 
                             setgameOver();
                         }
 
                         else if (matrix.gameOver() == 0 && gameOver == false) {
-                            losePopup.showAndWait();
+                            pause.setOnFinished(e -> {losePopup.show();});
+                            pause.play(); 
                             setgameOver();
                         }
                     }
 
-                    else if(event.getCode() == KeyCode.BACK_SPACE)
+                    else if(event.getCode() == KeyCode.BACK_SPACE && gameOver == false)
                         matrix.removeCurrentLetter();
             });
 
