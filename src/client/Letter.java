@@ -1,4 +1,4 @@
-//package src.client;
+package src.client;
 
 import javafx.scene.layout.StackPane;
 import javafx.scene.text.Font; 

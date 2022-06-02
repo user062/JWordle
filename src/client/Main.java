@@ -1,4 +1,4 @@
-//package src.client;
+package src.client;
 
 import javafx.application.Application;
 import javafx.application.Platform;

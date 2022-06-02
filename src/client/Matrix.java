@@ -1,4 +1,4 @@
-//package src.client;
+package src.client;
 
 import javafx.scene.layout.VBox;
 import java.util.ArrayList;
