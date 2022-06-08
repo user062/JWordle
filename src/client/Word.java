@@ -1,4 +1,4 @@
-package src.client;
+package client;
 
 import javafx.geometry.Insets;
 import javafx.scene.layout.HBox; 

@@ -1,4 +1,4 @@
-package src.client;
+package client;
 
 import javafx.scene.layout.VBox;
 import java.util.ArrayList;
@@ -74,6 +74,10 @@ public class Matrix extends VBox {
             return -1;
         else
             return 0;
+    }
+
+    public String getSolution() {
+        return this.solution;
     }
 
     public void clearMatrix() {
