@@ -1,19 +1,15 @@
 package server;
 
-import java.rmi.server.UnicastRemoteObject;
-import java.rmi.RemoteException;
 import java.util.*;
 import java.io.*;
-import common.RandomWordPickerInterface;
 
-public class RandomWordPicker extends UnicastRemoteObject implements RandomWordPickerInterface {
+public class RandomWordPicker {
     private Random rng = new Random();
     private String wordsFileName = "words";
     private File wordsFile = new File(wordsFileName);
     private ArrayList<String> words = new ArrayList<String>();
 
-    public RandomWordPicker() throws RemoteException {
-        super(2001);
+    public RandomWordPicker(){
         Scanner scanner = null;
         try {scanner = new Scanner(wordsFile);}
 

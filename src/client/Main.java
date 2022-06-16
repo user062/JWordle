@@ -11,38 +11,32 @@ import javafx.scene.control.Alert;
 import javafx.scene.control.Alert.*;
 import javafx.util.Duration;
 import javafx.animation.PauseTransition;  
-import java.rmi.Naming;
-import common.RandomWordPickerInterface;
+import java.net.*;
+import java.io.*;
 
 public class Main extends Application { 
     private static Matrix matrix;
-    private  static boolean gameOver = false;
+    private static boolean gameOver = false;
+    private static Socket socket    = null;
+    private static DataInputStream in = null;
 
     @Override 
     public void start(Stage stage) {      
-        
-        RandomWordPickerInterface randWordPicker = null;
-        
-        try {
-             randWordPicker = (RandomWordPickerInterface) java.rmi.Naming.lookup("rmi://localhost:2001/randwordpicker");
-
-        } catch (SecurityException e) { 
-            System.out.println("!!! --> A SecurityManager has been installed but the policy file has not been set properly");
-        } catch (java.rmi.NotBoundException e) {
-            System.out.println("!!! --> Server not bound at the given URL");
-            e.printStackTrace();
-        } catch (java.net.MalformedURLException e) {
-            e.printStackTrace();
-        } catch (java.rmi.UnknownHostException e) {
-            e.printStackTrace();
-        } catch (java.rmi.RemoteException e) {
-            e.printStackTrace();
+        try
+        {
+            socket = new Socket("localhost", 2001);
+            System.out.println("Connected");
+ 
+            in     = new DataInputStream(socket.getInputStream());
+            matrix = new Matrix(in.readUTF(), 5);
         }
-        
-        try {
-            matrix = new Matrix(randWordPicker.pickWord(), 5);
-        } catch (java.rmi.RemoteException e) {
-            e.printStackTrace();
+        catch(UnknownHostException u)
+        {
+            System.out.println(u);
+        }
+        catch(IOException i)
+        {
+            System.out.println(i);
         }
 
         Alert winPopup = new Alert(AlertType.INFORMATION);
