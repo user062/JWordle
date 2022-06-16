@@ -50,7 +50,7 @@ public class Main extends Application {
         winPopup.setContentText("Congragulations! You guessed the correct word");
         Alert losePopup = new Alert(AlertType.INFORMATION);
         losePopup.setTitle("game finished!");
-        losePopup.setContentText("good luck next time! The correct is " + matrix.getSolution());
+        losePopup.setContentText("good luck next time! The correct word is " + matrix.getSolution());
 
         PauseTransition pause = new PauseTransition(Duration.millis(700));  
         Scene scene = new Scene(matrix); 
